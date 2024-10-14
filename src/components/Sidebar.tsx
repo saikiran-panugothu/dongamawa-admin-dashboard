@@ -107,6 +107,15 @@ const Sidebar = () => {
             <span className="text-lg">Orders</span>
           </NavLink>
           <NavLink
+            to="/past-orders"
+            className={(isActiveObj) =>
+              isActiveObj.isActive ? navActiveClass : navInactiveClass
+            }
+          >
+            <HiOutlineTruck className="text-xl" />
+            <span className="text-lg">Past Orders</span>
+          </NavLink>
+          <NavLink
             to="/users"
             className={(isActiveObj) =>
               isActiveObj.isActive ? navActiveClass : navInactiveClass

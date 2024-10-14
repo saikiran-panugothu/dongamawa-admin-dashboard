@@ -24,6 +24,7 @@ import {
   Reviews,
   Users,
 } from "./pages";
+import PastOrders from "./pages/PastOrders";
 const router = createBrowserRouter([
   {
     path: "/login",
@@ -74,6 +75,10 @@ const router = createBrowserRouter([
         element: <Orders />,
       },
       {
+        path: "/past-orders",
+        element: <PastOrders />,
+      },
+      {
         path: "/orders/create-order",
         element: <CreateOrder />,
       },
@@ -118,7 +123,7 @@ const router = createBrowserRouter([
         element: <Profile />,
       },
     ],
-    
+
   },
 ]);
 
