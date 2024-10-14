@@ -4,11 +4,19 @@ import ApiService from "./ApiService";
 
 const customizationService = {
     createCustomizationProduct: async (data: any) => {
-        const URL = BASE_API_URL+API_ENDPOINTS.CREATE_CUSTOMIZATION_PRODUCT;
-        console.log(URL,'baseurl',data);
-        
-        return await ApiService.post(URL, data);
+        const URL = BASE_API_URL + API_ENDPOINTS.CREATE_CUSTOMIZATION_PRODUCT;
+        return await ApiService.post(URL, data, true);
     },
+
+    updateCustomizationProduct: async (data: any, id: number) => {
+        const URL = `${BASE_API_URL}${API_ENDPOINTS.CREATE_CUSTOMIZATION_PRODUCT}/${id}`;
+        return await ApiService.put(URL, data, true);
+    },
+
+    getCustomizationProducts: async () => {
+        const URL = BASE_API_URL + API_ENDPOINTS.CREATE_CUSTOMIZATION_PRODUCT;
+        return await ApiService.get(URL)
+    }
 };
 
 export default customizationService;

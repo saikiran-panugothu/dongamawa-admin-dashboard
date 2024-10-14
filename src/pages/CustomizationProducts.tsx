@@ -1,10 +1,34 @@
-import { Pagination, ProductTable, RowsPerPage, Sidebar, WhiteButton } from "../components";
+import { useEffect, useState } from "react";
+import { ProductTable, Sidebar, WhiteButton } from "../components";
 import { HiOutlinePlus } from "react-icons/hi";
 import { HiOutlineChevronRight } from "react-icons/hi";
 import { AiOutlineExport } from "react-icons/ai";
-import { HiOutlineSearch } from "react-icons/hi";
+import CustomizationController from "../controllers/CustomizationController";
+import { Loader } from "../components/common/Loader/Loader";
 
 const CustomizationProducts = () => {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    try {
+      const response = await CustomizationController.getProducts();
+      setProducts(response);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return <Loader />;
+  }
+
   return (
     <div className="h-auto border-t dark:border-blackSecondary border-blackSecondary border-1 flex dark:bg-blackPrimary bg-whiteSecondary">
       <Sidebar />
@@ -24,42 +48,26 @@ const CustomizationProducts = () => {
             <div className="flex gap-x-2 max-[370px]:flex-col max-[370px]:gap-2 max-[370px]:items-center">
               <button className="dark:bg-blackPrimary bg-whiteSecondary border border-gray-600 w-32 py-2 text-lg hover:border-gray-500 duration-200 flex items-center justify-center gap-x-2">
                 <AiOutlineExport className="dark:text-whiteSecondary text-blackPrimary text-base" />
-                <span className="dark:text-whiteSecondary text-blackPrimary font-medium">Export</span>
+                <span className="dark:text-whiteSecondary text-blackPrimary font-medium">
+                  Export
+                </span>
               </button>
-              <WhiteButton link="/products/create-customization-product" text="Add a product" textSize="lg" py="2" width="48"><HiOutlinePlus className="dark:text-blackPrimary text-whiteSecondary" /></WhiteButton>
-            </div>
-          </div>
-          <div className="px-4 sm:px-6 lg:px-8 flex justify-between items-center mt-5 max-sm:flex-col max-sm:gap-2">
-            <div className="relative">
-              <HiOutlineSearch className="text-gray-400 text-lg absolute top-3 left-3" />
-              <input
-                type="text"
-                className="w-60 h-10 border dark:bg-blackPrimary bg-white border-gray-600 dark:text-whiteSecondary text-blackPrimary outline-0 indent-10 focus:border-gray-500"
-                placeholder="Search products..."
-              />
-            </div>
-            <div>
-              <select
-                className="w-60 h-10 dark:bg-blackPrimary bg-whiteSecondary border border-gray-600 dark:text-whiteSecondary text-blackPrimary outline-0 pl-3 pr-8 cursor-pointer hover:border-gray-500"
-                name="sort"
-                id="sort"
+              <WhiteButton
+                link="/products/create-customization-product"
+                text="Add a product"
+                textSize="lg"
+                py="2"
+                width="48"
               >
-                <option value="default">Sort by</option>
-                <option value="az">A-Z</option>
-                <option value="za">Z-A</option>
-                <option value="newest">Newest</option>
-                <option value="oldest">Oldest</option>
-              </select>
+                <HiOutlinePlus className="dark:text-blackPrimary text-whiteSecondary" />
+              </WhiteButton>
             </div>
           </div>
-          <ProductTable />
-          <div className="flex justify-between items-center px-4 sm:px-6 lg:px-8 py-6 max-sm:flex-col gap-4 max-sm:pt-6 max-sm:pb-0">
-            <RowsPerPage />
-            <Pagination />
-          </div>
+          <ProductTable products={products} />
         </div>
       </div>
     </div>
   );
 };
+
 export default CustomizationProducts;

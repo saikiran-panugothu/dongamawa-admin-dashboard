@@ -1,17 +1,20 @@
-import React, { useState } from "react";
 import { ImageUpload, InputWithLabel, Sidebar } from "../components";
 import { HiOutlineSave } from "react-icons/hi";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import SimpleInput from "../components/SimpleInput";
 import SelectInput from "../components/SelectInput";
 import { customizationCategories, fabricType } from "../utils/data";
-import CustomizationController from "../controllers/CustomizationController";
+import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
+import CustomizationController from "../controllers/CustomizationController";
 import { Loader } from "../components/common/Loader/Loader";
-import { useNavigate } from "react-router-dom";
 
-const CreateCustomizationProduct = () => {
+const EditCustomizedProducts = () => {
+  const location = useLocation();
   const navigate = useNavigate();
   const [loader, setLoader] = useState<boolean>(false);
+  const product = location.state?.product; // Retrieve the product data
+
   const [formData, setFormData] = useState({
     name: "",
     type: "",
@@ -23,6 +26,13 @@ const CreateCustomizationProduct = () => {
     imgFront: null as File | null,
     imgBack: null as File | null,
   });
+
+  // Pre-populate form with product data on mount
+  useEffect(() => {
+    if (product) {
+      setFormData(product);
+    }
+  }, [product]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -38,16 +48,6 @@ const CreateCustomizationProduct = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoader(true);
-    // Check for empty fields
-    for (const key in formData) {
-      if (formData[key] === null || formData[key] === "") {
-        console.error(`Validation Error: ${key} cannot be null or empty`);
-        toast.error("All fields are required");
-        return; // Exit the function if validation fails
-      }
-    }
-
-    // Prepare form data for submission
     const formDataToSubmit = new FormData();
     for (const key in formData) {
       if (formData[key] instanceof File) {
@@ -58,36 +58,36 @@ const CreateCustomizationProduct = () => {
     }
 
     try {
-      const response = await CustomizationController.createProduct(
-        formDataToSubmit
+      const response = await CustomizationController.updateProduct(
+        formDataToSubmit,
+        product.id
       );
-      toast.success("Product created successfully");
-      console.log("Product created successfully:", response);
-      navigate('/customized-products');
+      toast.success("Product updated successfully");
+      console.log("Product updated successfully:", response);
+      navigate("/customized-products");
     } catch (error) {
-      console.error("Error creating product:", error);
+      console.error("Error updated product:", error);
     } finally {
       setLoader(false);
     }
   };
 
   return (
-    <div className="h-auto border-t border-blackSecondary border-1 flex dark:bg-blackPrimary bg-whiteSecondary">
+    <div className="h-auto border-t border-blackSecondary flex dark:bg-blackPrimary bg-whiteSecondary">
       <Sidebar />
-      <div className="hover:bg-blackPrimary bg-whiteSecondary w-full">
-        <div className="dark:bg-blackPrimary bg-whiteSecondary py-10">
-          <div className="px-4 sm:px-6 lg:px-8 pb-8 border-b border-gray-800 flex justify-between items-center max-sm:flex-col max-sm:gap-5">
+      <div className="dark:bg-blackPrimary bg-whiteSecondary w-full">
+        <div className="py-10">
+          <div className="px-4 sm:px-6 lg:px-8 pb-8 border-b border-gray-800 flex justify-between items-center max-sm:flex-col gap-5">
             <h2 className="text-3xl font-bold leading-7 dark:text-whiteSecondary text-blackPrimary">
-              Add Product
+              Edit Customized Product
             </h2>
-
             <button
               onClick={handleSubmit}
-              className="dark:bg-whiteSecondary bg-blackPrimary w-48 py-2 text-lg dark:hover:bg-white hover:bg-black duration-200 flex items-center justify-center gap-x-2"
+              className="dark:bg-whiteSecondary bg-blackPrimary w-48 py-2 text-lg flex items-center justify-center gap-x-2"
             >
               <HiOutlineSave className="dark:text-blackPrimary text-whiteSecondary text-xl" />
               <span className="dark:text-blackPrimary text-whiteSecondary font-semibold">
-                Save Product
+                Update product
               </span>
             </button>
           </div>
@@ -197,6 +197,8 @@ const CreateCustomizationProduct = () => {
                   name="imgBack"
                   onChange={(file) => handleFileChange(file, "imgBack")}
                 />
+                <img src={formData.imgFront} />
+                <img src={formData.imgBack} />
               </div>
             </div>
           </form>
@@ -207,4 +209,4 @@ const CreateCustomizationProduct = () => {
   );
 };
 
-export default CreateCustomizationProduct;
+export default EditCustomizedProducts;
