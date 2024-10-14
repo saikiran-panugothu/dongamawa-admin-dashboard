@@ -25,6 +25,8 @@ import {
   Users,
 } from "./pages";
 import PastOrders from "./pages/PastOrders";
+import CustomizationProducts from "./pages/CustomizationProducts";
+import CreateCustomizationProduct from "./pages/CreateCustomizatioinProduct";
 const router = createBrowserRouter([
   {
     path: "/login",
@@ -51,8 +53,16 @@ const router = createBrowserRouter([
         element: <Products />,
       },
       {
+        path: "/customized-products",
+        element: <CustomizationProducts />,
+      },
+      {
         path: "/products/create-product",
         element: <CreateProduct />,
+      },
+      {
+        path: "/products/create-customization-product",
+        element: <CreateCustomizationProduct />,
       },
       {
         path: "/products/:id",

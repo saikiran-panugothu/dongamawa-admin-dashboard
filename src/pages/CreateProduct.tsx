@@ -170,7 +170,8 @@ const CreateProduct = () => {
                 Product images
               </h3>
 
-              <ImageUpload />
+              <ImageUpload label="Front Image" name="imgFront" />
+              <ImageUpload label="Back Image" name="imgBack" />
             </div>
           </div>
         </div>

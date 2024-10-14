@@ -89,6 +89,15 @@ const Sidebar = () => {
             <span className="text-lg">Products</span>
           </NavLink>
           <NavLink
+            to="/customized-products"
+            className={(isActiveObj) =>
+              isActiveObj.isActive ? navActiveClass : navInactiveClass
+            }
+          >
+            <HiOutlineDevicePhoneMobile className="text-xl" />
+            <span className="text-lg">Customization Products</span>
+          </NavLink>
+          <NavLink
             to="/categories"
             className={(isActiveObj) =>
               isActiveObj.isActive ? navActiveClass : navInactiveClass

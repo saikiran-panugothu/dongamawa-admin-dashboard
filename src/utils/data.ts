@@ -1,3 +1,37 @@
+export const customizationCategories = [
+  {
+    label: "Select category",
+    value: "default",
+  },
+  {
+    label: "T-shirt",
+    value: "tshirt",
+  },
+  {
+    label: "Key Chains",
+    value: "keychains",
+  },
+  {
+    label: "Coffee Mugs",
+    value: "coffeemugs",
+  },
+]
+
+export const fabricType = [
+  {
+    label: "Select category",
+    value: "default",
+  },
+  {
+    label: "100% cottom",
+    value: "1",
+  },
+  {
+    label: "Polyster",
+    value: "2",
+  },
+]
+
 export const selectList = [
   {
     label: "Select category",
